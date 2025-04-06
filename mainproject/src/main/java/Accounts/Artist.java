@@ -11,14 +11,13 @@ public class Artist {
     }
 
     public void artistPanel() {
-        Scanner scanner = new Scanner(System.in);
-
         while (true) {
             System.out.println("\nWelcome " + artistName + " to the Artist Panel");
             System.out.println("Choose one of the options:");
             System.out.println("1. Create New Album");
             System.out.println("2. Create New Song");
-            System.out.println("3. Exit");
+            System.out.println("3. Request Lyrics Edit");
+            System.out.println("4. Exit");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -31,11 +30,17 @@ public class Artist {
                     Song.createNewSong(artistName);
                     break;
                 case 3:
+                    requestEditLyrics();
+                    break;
+                case 4:
                     System.out.println("Exiting Artist Panel...");
                     return;
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
         }
+    }
+    private void requestEditLyrics() {
+        Song.requestEditLyrics(artistName, artistName);
     }
 }
