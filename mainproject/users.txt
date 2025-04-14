@@ -1,6 +1,0 @@
-Role: Admin
-Name: admin
-Age: admin
-Username: admin
-Password: admin
-----------------------

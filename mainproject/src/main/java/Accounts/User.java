@@ -63,7 +63,7 @@ public class User {
     }
 
     private void saveFollowing(String artistName) {
-        String filename = "following_" + username + ".txt";
+        String filename = "data/following_" + username + ".txt";
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
             writer.write(artistName + "\n");
         } catch (IOException e) {
@@ -72,7 +72,7 @@ public class User {
     }
 
     private void showFollowingList() {
-        String filename = "following_" + username + ".txt";
+        String filename = "data/following_" + username + ".txt";
         File file = new File(filename);
 
         if (!file.exists()) {

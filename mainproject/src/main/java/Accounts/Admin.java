@@ -1,4 +1,5 @@
 package accounts;
+
 import java.io.*;
 import java.util.*;
 
@@ -17,24 +18,20 @@ public class Admin {
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    handleArtistRequests();
-                    break;
-                case 2:
-                    handleLyricEditRequests();
-                    break;
-                case 3:
+                case 1 -> handleArtistRequests();
+                case 2 -> handleLyricEditRequests();
+                case 3 -> {
                     System.out.println("Logging out...");
                     return;
-                default:
-                    System.out.println("Invalid choice. Try again.");
+                }
+                default -> System.out.println("Invalid choice. Try again.");
             }
         }
     }
 
     private void handleArtistRequests() {
         List<String> requests = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("pending_artists.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/pending_artists.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 requests.add(line);
@@ -59,7 +56,7 @@ public class Admin {
     }
 
     private void approveArtist(String artistData) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("approved_artists.txt", true))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/approved_artists.txt", true))) {
             writer.write(artistData + "\n");
             System.out.println("Artist has been approved and added to the approved list.");
         } catch (IOException e) {
@@ -69,7 +66,7 @@ public class Admin {
 
     private void removeArtistRequest(String artistData) {
         List<String> allRequests = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("pending_artists.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader("data/pending_artists.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 if (!line.equals(artistData)) {
@@ -80,7 +77,7 @@ public class Admin {
             System.out.println("Error reading pending requests.");
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("pending_artists.txt"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("data/pending_artists.txt"))) {
             for (String request : allRequests) {
                 writer.write(request + "\n");
             }
@@ -89,69 +86,60 @@ public class Admin {
         }
     }
 
-    // مدیریت درخواست‌های ویرایش لیریکس
     private void handleLyricEditRequests() {
-        List<String> requests = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("pending_lyrics_requests.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                requests.add(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Error reading lyric edit requests.");
-        }
+        File editFolder = new File("data/edits");
+        File[] editFiles = editFolder.listFiles((dir, name) -> name.endsWith("_edit.txt"));
 
-        if (requests.isEmpty()) {
+        if (editFiles == null || editFiles.length == 0) {
             System.out.println("No lyric edit requests.");
             return;
         }
 
-        for (String request : requests) {
-            System.out.println("Approve lyric edit request: " + request + " ? (y/n)");
-            String decision = scanner.nextLine();
-            if (decision.equalsIgnoreCase("y")) {
-                approveLyricEdit(request);
-                removeLyricEditRequest(request);
+        for (File editFile : editFiles) {
+            System.out.println("Reviewing: " + editFile.getName());
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(editFile))) {
+                String line;
+                StringBuilder lyrics = new StringBuilder();
+                while ((line = reader.readLine()) != null) {
+                    lyrics.append(line).append("\n");
+                }
+                System.out.println(lyrics);
+                System.out.println("Approve this edit? (y/n):");
+                String decision = scanner.nextLine();
+
+                if (decision.equalsIgnoreCase("y")) {
+                    applyEditToSong(editFile.getName(), lyrics.toString());
+                    editFile.delete();
+                    System.out.println("Edit approved and applied.");
+                } else {
+                    editFile.delete();
+                    System.out.println("Edit rejected and deleted.");
+                }
+
+            } catch (IOException e) {
+                System.out.println("Error reading edit file: " + editFile.getName());
             }
         }
     }
 
+    private void applyEditToSong(String editFileName, String lyricsContent) {
+        String songFileName = editFileName.replace("_edit.txt", "");
+        File songFile = new File("data/songs/" + songFileName);
 
-    private void approveLyricEdit(String request) {
-        String[] requestData = request.split(",");
-        String artistName = requestData[0].trim();
-        String songName = requestData[1].trim();
-        String newLyrics = requestData[2].trim();
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("songs/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + ".txt"))) {
-            writer.write("Song Name: " + songName + "\n");
-            writer.write("Artist: " + artistName + "\n");
-            writer.write("Lyrics:\n" + newLyrics);
-            System.out.println("Lyric edit approved and updated.");
-        } catch (IOException e) {
-            System.out.println("Error updating lyrics: " + e.getMessage());
-        }
-    }
-
-    private void removeLyricEditRequest(String request) {
-        List<String> allRequests = new ArrayList<>();
-        try (BufferedReader reader = new BufferedReader(new FileReader("pending_lyrics_requests.txt"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                if (!line.equals(request)) {
-                    allRequests.add(line);
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(songFile))) {
+            String[] lines = lyricsContent.split("\n", 4);
+            for (String line : lines) {
+                if (line.startsWith("Song Name:") || line.startsWith("Artist:")) {
+                    writer.write(line + "\n");
                 }
             }
-        } catch (IOException e) {
-            System.out.println("Error reading pending lyric edit requests.");
-        }
-
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("pending_lyrics_requests.txt"))) {
-            for (String requestLine : allRequests) {
-                writer.write(requestLine + "\n");
+            writer.write("Lyrics:\n");
+            if (lyricsContent.contains("Lyrics:\n")) {
+                writer.write(lyricsContent.split("Lyrics:\\n", 2)[1]);
             }
         } catch (IOException e) {
-            System.out.println("Error updating pending lyric edit requests.");
+            System.out.println("Error updating song lyrics.");
         }
     }
 }

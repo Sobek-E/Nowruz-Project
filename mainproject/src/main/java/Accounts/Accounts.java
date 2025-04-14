@@ -9,6 +9,8 @@ public class Accounts {
     private String username;
     private Scanner scanner = new Scanner(System.in);
 
+    private static final String DATA_DIR = "data/";
+
     public Accounts(String role) {
         this.role = role;
         System.out.println("Choose one of the options:");
@@ -69,10 +71,10 @@ public class Accounts {
         String password = scanner.nextLine();
 
         if (role.equals("Artist")) {
-            saveToFile("pending_artists.txt", role, name, age, username, password);
+            saveToFile(DATA_DIR + "pending_artists.txt", role, name, age, username, password);
             System.out.println("Your artist request has been submitted for admin approval.");
         } else {
-            saveToFile("users.txt", role, name, age, username, password);
+            saveToFile(DATA_DIR + "users.txt", role, name, age, username, password);
             System.out.println("Your account has been created successfully!");
         }
     }
@@ -91,7 +93,9 @@ public class Accounts {
     }
 
     private boolean checkLogin(String username, String password) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("users.txt"))) {
+        String fileToCheck = role.equals("Artist") ? DATA_DIR + "approved_artists.txt" : DATA_DIR + "users.txt";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileToCheck))) {
             String line;
             String storedUsername = "";
             String storedPassword = "";
@@ -124,18 +128,22 @@ public class Accounts {
     }
 
     public String getArtistName(String username) {
-        try (BufferedReader reader = new BufferedReader(new FileReader("approved_artists.txt"))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(DATA_DIR + "approved_artists.txt"))) {
             String line;
-            String artistName = "";
+            String blockUsername = "";
+            String blockName = "";
 
             while ((line = reader.readLine()) != null) {
-                if (line.startsWith("Username: ") && line.substring(10).equals(username)) {
-                    while ((line = reader.readLine()) != null && !line.startsWith("----------------------")) {
-                        if (line.startsWith("Name: ")) {
-                            artistName = line.substring(6);
-                            return artistName;
-                        }
+                if (line.startsWith("Username: ")) {
+                    blockUsername = line.substring(10).trim();
+                } else if (line.startsWith("Name: ")) {
+                    blockName = line.substring(6).trim();
+                } else if (line.startsWith("----------------------")) {
+                    if (blockUsername.equals(username)) {
+                        return blockName;
                     }
+                    blockUsername = "";
+                    blockName = "";
                 }
             }
         } catch (IOException e) {
@@ -157,5 +165,4 @@ public class Accounts {
             new Artist(artistName).artistPanel();
         }
     }
-
 }

@@ -4,8 +4,8 @@ import java.io.*;
 import java.util.Scanner;
 
 public class Comment {
-    public static void showComments(String artistName, String songName) {
-        String filePath = "comments/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_comments.txt";
+    public static void showCommentsAndAdd(String artistName, String songName) {
+        String filePath = "data/comments/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_comments.txt";
         File file = new File(filePath);
 
         System.out.println("\n--- Comments for " + songName + " by " + artistName + " ---");
@@ -30,13 +30,8 @@ public class Comment {
         scanner.nextLine();
 
         if (choice == 1) {
-            addComment(artistName, songName);
+            addComment(filePath);
         }
-    }
-
-    public static void addComment(String artistName, String songName) {
-        String filePath = "comments/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_comments.txt";
-        addComment(filePath);
     }
 
     private static void addComment(String filePath) {

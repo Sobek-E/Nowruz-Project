@@ -1,12 +1,18 @@
 import java.util.Scanner;
 import accounts.*;
+import java.io.File;
 
 public class Main {
     public static void main(String[] args) {
+        new File("data").mkdir();
+        new File("data/songs").mkdir();
+        new File("data/comments").mkdir();
+        new File("data/views").mkdir();
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nWelcome to Spotify");
+            System.out.println("\nWelcome to Musicify");
             System.out.println("Choose your role:");
             System.out.println("1. Admin");
             System.out.println("2. Artist");
@@ -38,7 +44,6 @@ public class Main {
             }
 
             Accounts account = new Accounts(role);
-
             account.openPanel(role);
         }
     }

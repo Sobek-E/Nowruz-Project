@@ -5,7 +5,7 @@ import java.io.*;
 public class View {
 
     public static void addView(String artistName, String songName) {
-        String fileName = "views/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_views.txt";
+        String fileName = "data/views/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_views.txt";
         int views = getViewCount(artistName, songName) + 1;
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
@@ -16,7 +16,7 @@ public class View {
     }
 
     public static int getViewCount(String artistName, String songName) {
-        String fileName = "views/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_views.txt";
+        String fileName = "data/views/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_views.txt";
         File file = new File(fileName);
 
         if (!file.exists()) return 0;
