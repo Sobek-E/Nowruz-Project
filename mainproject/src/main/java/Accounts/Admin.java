@@ -8,7 +8,7 @@ public class Admin {
 
     public void adminPanel() {
         while (true) {
-            System.out.println("\nWelcome to Admin Panel");
+            System.out.println("\n--- Welcome to Admin Panel ---");
             System.out.println("Choose an option:");
             System.out.println("1. See artist requests");
             System.out.println("2. See lyric edit requests");

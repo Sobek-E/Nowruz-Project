@@ -16,3 +16,9 @@ Age: User
 Username: User
 Password: User
 ----------------------
+Role: Admin
+Name: asdf
+Age: asdf
+Username: asdf
+Password: asdf
+----------------------

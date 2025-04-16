@@ -12,7 +12,9 @@ public class Search {
 
     public static void searchMenu() {
         while (true) {
-            System.out.println("\nSearch Menu:");
+            System.out.println("\n=====================");
+            System.out.println("   Search Menu");
+            System.out.println("=====================");
             System.out.println("1. Show Random Songs");
             System.out.println("2. Search for a Song");
             System.out.println("3. Return to Main Menu");
@@ -33,18 +35,19 @@ public class Search {
     private static void showRandomSongs() {
         List<File> songFiles = getAllSongFiles();
         if (songFiles.isEmpty()) {
-            System.out.println("No songs available.");
+            System.out.println("\nNo songs available.");
             return;
         }
 
         Collections.shuffle(songFiles);
+        System.out.println("\nHere are some random songs:");
         for (int i = 0; i < Math.min(5, songFiles.size()); i++) {
             displaySongInfo(songFiles.get(i));
         }
     }
 
     private static void searchSong() {
-        System.out.print("Type your artist name and your song name or keyword: ");
+        System.out.print("\nEnter artist name, song name, or keyword: ");
         String query = scanner.nextLine().toLowerCase();
 
         List<File> songFiles = getAllSongFiles();
@@ -58,7 +61,7 @@ public class Search {
         }
 
         if (!found) {
-            System.out.println("No songs matched your search.");
+            System.out.println("\nNo songs matched your search.");
         }
     }
 
@@ -101,13 +104,16 @@ public class Search {
             int dislikes = readCount(LIKES_DIRECTORY + songFile.getName() + "_dislike.txt");
             int views = incrementViewCount(songFile.getName());
 
-            System.out.println("\nArtist: " + artist);
+            System.out.println("\n=====================");
+            System.out.println("Song Details");
+            System.out.println("=====================");
+            System.out.println("Artist: " + artist);
             if (!album.isEmpty()) System.out.println("Album: " + album);
             System.out.println("Song: " + songName);
-            System.out.println("Lyrics:\n" + lyrics);
-            System.out.println("Likes: " + likes + "   Dislikes: " + dislikes + "   Views: " + views);
-
-            System.out.println("\nOptions:");
+            System.out.println("\nLyrics:\n" + lyrics);
+            System.out.println("\nLikes: " + likes + "   Dislikes: " + dislikes + "   Views: " + views);
+            System.out.println("=====================");
+            System.out.println("Options:");
             System.out.println("1. Like");
             System.out.println("2. Dislike");
             System.out.println("3. Add Comment");

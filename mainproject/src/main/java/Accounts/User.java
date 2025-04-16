@@ -14,38 +14,33 @@ public class User {
 
     public void userPanel() {
         while (true) {
-            System.out.println("\nWelcome to User Panel");
-            System.out.println("Choose one of the options:");
+            System.out.println("\n+---------------- User Panel ----------------+");
+            System.out.println("Welcome, " + username + "!");
             System.out.println("1. View Songs");
             System.out.println("2. Follow an Artist");
             System.out.println("3. Your Following List");
             System.out.println("4. Exit");
+            System.out.println("+--------------------------------------------+");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
 
             switch (choice) {
-                case 1:
-                    Search.searchMenu();
-                    break;
-                case 2:
-                    followArtist();
-                    break;
-                case 3:
-                    showFollowingList();
-                    break;
-                case 4:
-                    System.out.println("Exiting User Panel...");
+                case 1 -> Search.searchMenu();
+                case 2 -> followArtist();
+                case 3 -> showFollowingList();
+                case 4 -> {
+                    System.out.println("Exiting user panel...");
                     return;
-                default:
-                    System.out.println("Invalid choice. Try again.");
+                }
+                default -> System.out.println("Invalid option. Try again.");
             }
         }
     }
 
     private void followArtist() {
         while (true) {
-            System.out.print("Enter the artist's name you want to follow: ");
+            System.out.print("Enter the artist's name to follow: ");
             String artistName = scanner.nextLine();
 
             if (!artistName.isEmpty()) {
@@ -53,12 +48,9 @@ public class User {
                 System.out.println("You are now following " + artistName + "!");
             }
 
-            System.out.println("Do you want to follow another artist? (y/n)");
+            System.out.println("Follow another artist? (y/n):");
             String choice = scanner.nextLine();
-
-            if (!choice.equalsIgnoreCase("y")) {
-                return;
-            }
+            if (!choice.equalsIgnoreCase("y")) return;
         }
     }
 
@@ -67,7 +59,7 @@ public class User {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename, true))) {
             writer.write(artistName + "\n");
         } catch (IOException e) {
-            System.out.println("Error saving following list: " + e.getMessage());
+            System.out.println("Error saving following: " + e.getMessage());
         }
     }
 
@@ -76,7 +68,7 @@ public class User {
         File file = new File(filename);
 
         if (!file.exists()) {
-            System.out.println("You are not following any artists yet.");
+            System.out.println("You are not following any artists.");
             return;
         }
 
@@ -87,7 +79,7 @@ public class User {
                 System.out.println("- " + line);
             }
         } catch (IOException e) {
-            System.out.println("Error reading following list: " + e.getMessage());
+            System.out.println("Error reading following list.");
         }
     }
 }

@@ -12,12 +12,15 @@ public class Main {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            System.out.println("\nWelcome to Musicify");
-            System.out.println("Choose your role:");
-            System.out.println("1. Admin");
-            System.out.println("2. Artist");
-            System.out.println("3. User");
-            System.out.println("4. Exit");
+            System.out.println("\n+-------------------------+");
+            System.out.println("|     Welcome to Musicify |");
+            System.out.println("+-------------------------+");
+            System.out.println("| Choose your role:       |");
+            System.out.println("| 1. Admin                |");
+            System.out.println("| 2. Artist               |");
+            System.out.println("| 3. User                 |");
+            System.out.println("| 4. Exit                 |");
+            System.out.println("+-------------------------+");
 
             int choice = scanner.nextInt();
             scanner.nextLine();

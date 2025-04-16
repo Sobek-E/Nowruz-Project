@@ -4,3 +4,9 @@ Age: Artist
 Username: Artist
 Password: Artist
 ----------------------
+Role: Artist
+Name: kok
+Age: kok
+Username: kok
+Password: kok
+----------------------

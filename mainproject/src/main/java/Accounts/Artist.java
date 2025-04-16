@@ -13,12 +13,13 @@ public class Artist {
 
     public void artistPanel() {
         while (true) {
-            System.out.println("\nWelcome " + artistName + " to the Artist Panel");
-            System.out.println("Choose one of the options:");
+            System.out.println("\n+---------------- Artist Panel ----------------+");
+            System.out.println("Welcome, " + artistName + "!");
             System.out.println("1. Create New Album");
             System.out.println("2. Create New Song");
-            System.out.println("3. See and Approve Lyrics Edit Requests");
+            System.out.println("3. See/Edit Lyrics Edit Requests");
             System.out.println("4. Exit");
+            System.out.println("+---------------------------------------------+");
 
             int choice = scanner.nextInt();
             scanner.nextLine();
@@ -28,10 +29,10 @@ public class Artist {
                 case 2 -> Song.createNewSong(artistName);
                 case 3 -> Song.handleArtistEditRequests(artistName);
                 case 4 -> {
-                    System.out.println("Exiting Artist Panel...");
+                    System.out.println("Exiting artist panel...");
                     return;
                 }
-                default -> System.out.println("Invalid choice. Please try again.");
+                default -> System.out.println("Invalid option. Try again.");
             }
         }
     }

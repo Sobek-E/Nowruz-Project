@@ -8,14 +8,11 @@ public class Accounts {
     private String artistName = null;
     private String username;
     private Scanner scanner = new Scanner(System.in);
-
     private static final String DATA_DIR = "data/";
 
     public Accounts(String role) {
         this.role = role;
-        System.out.println("Choose one of the options:");
-        System.out.println("1. Login");
-        System.out.println("2. Sign Up");
+        printBox("Choose one of the options:\n1. Login\n2. Sign Up");
 
         int option = scanner.nextInt();
         scanner.nextLine();
@@ -31,9 +28,10 @@ public class Accounts {
 
     public void login() {
         while (true) {
-            System.out.println("Enter your Username:");
+            printBox("Login");
+            System.out.print("Enter your Username: ");
             String inputUsername = scanner.nextLine();
-            System.out.println("Enter your Password:");
+            System.out.print("Enter your Password: ");
             String inputPassword = scanner.nextLine();
 
             if (checkLogin(inputUsername, inputPassword)) {
@@ -49,10 +47,7 @@ public class Accounts {
                 openPanel(role);
                 break;
             } else {
-                System.out.println("Error: Invalid username or password.");
-                System.out.println("1. Try again");
-                System.out.println("2. Exit");
-
+                printBox("Error: Invalid username or password.\n1. Try again\n2. Exit");
                 int choice = scanner.nextInt();
                 scanner.nextLine();
                 if (choice == 2) return;
@@ -61,13 +56,14 @@ public class Accounts {
     }
 
     public void signUp() {
-        System.out.println("Enter your name: ");
+        printBox("Sign Up");
+        System.out.print("Enter your name: ");
         String name = scanner.nextLine();
-        System.out.println("Enter your age: ");
+        System.out.print("Enter your age: ");
         String age = scanner.nextLine();
-        System.out.println("Enter your Username: ");
+        System.out.print("Enter your Username: ");
         String username = scanner.nextLine();
-        System.out.println("Enter your Password: ");
+        System.out.print("Enter your Password: ");
         String password = scanner.nextLine();
 
         if (role.equals("Artist")) {
@@ -164,5 +160,20 @@ public class Accounts {
             }
             new Artist(artistName).artistPanel();
         }
+    }
+
+    // Utility method to draw boxes around menus
+    private void printBox(String text) {
+        String[] lines = text.split("\n");
+        int maxLength = 0;
+        for (String line : lines) {
+            if (line.length() > maxLength) maxLength = line.length();
+        }
+
+        System.out.println("╔" + "═".repeat(maxLength + 2) + "╗");
+        for (String line : lines) {
+            System.out.println("║ " + String.format("%-" + maxLength + "s", line) + " ║");
+        }
+        System.out.println("╚" + "═".repeat(maxLength + 2) + "╝");
     }
 }

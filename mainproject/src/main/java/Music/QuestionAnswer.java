@@ -29,9 +29,11 @@ public class QuestionAnswer {
             }
         }
 
-        System.out.println("\n1. Ask a Question");
+        System.out.println("\n---------------------------");
+        System.out.println("1. Ask a Question");
         System.out.println("2. Answer a Question");
         System.out.println("3. Back");
+        System.out.println("---------------------------");
         System.out.print("Your choice: ");
         int choice = scanner.nextInt();
         scanner.nextLine();

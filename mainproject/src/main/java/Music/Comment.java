@@ -8,7 +8,7 @@ public class Comment {
         String filePath = "data/comments/" + artistName.replaceAll(" ", "_") + "_" + songName.replaceAll(" ", "_") + "_comments.txt";
         File file = new File(filePath);
 
-        System.out.println("\n--- Comments for " + songName + " by " + artistName + " ---");
+        System.out.println("\n--- Comments for \"" + songName + "\" by " + artistName + " ---");
         if (!file.exists()) {
             System.out.println("No comments yet.");
         } else {
@@ -24,7 +24,7 @@ public class Comment {
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("\n1. Add a Comment");
-        System.out.println("2. Back to Song Info");
+        System.out.println("2. Back");
 
         int choice = scanner.nextInt();
         scanner.nextLine();
@@ -41,7 +41,7 @@ public class Comment {
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
             writer.write(comment + "\n");
-            System.out.println("Comment added successfully!");
+            System.out.println("Comment added!");
         } catch (IOException e) {
             System.out.println("Error saving comment: " + e.getMessage());
         }
