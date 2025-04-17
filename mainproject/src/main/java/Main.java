@@ -1,5 +1,4 @@
 import java.util.Scanner;
-import accounts.*;
 import java.io.File;
 
 public class Main {
@@ -46,7 +45,7 @@ public class Main {
                     continue;
             }
 
-            Accounts account = new Accounts(role);
+            Accounts.Accounts account = new Accounts.Accounts(role);
             account.openPanel(role);
         }
     }

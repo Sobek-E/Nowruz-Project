@@ -1,6 +1,6 @@
-package accounts;
+package Accounts;
 
-import music.Search;
+import Music.Search;
 import java.io.*;
 import java.util.Scanner;
 

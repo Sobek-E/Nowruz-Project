@@ -1,7 +1,7 @@
-package accounts;
+package Accounts;
 
 import java.util.Scanner;
-import music.Song;
+import Music.Song;
 
 public class Artist {
     private String artistName;

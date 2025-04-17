@@ -1,4 +1,4 @@
-package music;
+package Music;
 
 import java.io.*;
 
